@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from "@react-navigation/stack";
-import AccountScreen from "./AccountScreen";
-import CameraScreen from './CameraScreen';
+import AccountScreen from "../screens/AccountScreen";
+import CameraScreen from '../screens/CameraScreen';
 import { lightStyles } from '../styles/commonStyles';
 
 const Stack = createStackNavigator();

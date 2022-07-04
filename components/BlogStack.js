@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import IndexScreen from './IndexScreen';
-import CreateScreen from './CreateScreen';
-import EditScreen from './EditScreen';
-import ShowScreen from './DetailsScreen';
+import IndexScreen from '../screens/IndexScreen';
+import CreateScreen from '../screens/CreateScreen';
+import EditScreen from '../screens/EditScreen';
+import ShowScreen from '../screens/DetailsScreen';
 import { lightStyles } from '../styles/commonStyles';
 
 const InnerStack = createStackNavigator();
