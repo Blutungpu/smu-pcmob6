@@ -14,6 +14,7 @@ export default function BlogStack() {
   const headerOptions = {
     headerStyle: styles.header,
     headerTitleStyle: styles.headerTitle,
+    headerLeft: null,
     headerTintColor: styles.headerTint
   }
 
