@@ -8,12 +8,13 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS } from "../constants/API";
 import { lightStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
 
 export default function IndexScreen({ navigation, route }) {
-
+  const token = useSelector((state) => state.auth.token);
+  console.log("Token: " + token);
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const styles = lightStyles;
@@ -41,54 +42,54 @@ export default function IndexScreen({ navigation, route }) {
       getPosts();
     });
     getPosts();
+    return removeListener;
   }, []);
 
   async function getPosts() {
-    const token = await AsyncStorage.getItem("token");
     try {
       const response = await axios.get(API + API_POSTS, {
         headers: { Authorization: `JWT ${token}` },
-      })
+      });
       console.log(response.data);
       setPosts(response.data);
-      return "completed"
+      return "completed";
     } catch (error) {
-      console.log(error.response.data);
-      if (error.response.data.error = "Invalid token") {
+      console.log("error.response:" + error.response.data);
+      if (error.response.data.error == "Invalid token") {
         navigation.navigate("SignInSignUp");
       }
     }
   }
+
   async function onRefresh() {
-    setRefreshing(true)
+    setRefreshing(true);
     const response = await getPosts();
-    setRefreshing(false)
+    setRefreshing(false);
   }
 
   function addPost() {
-    navigation.navigate("Add")
-    
+    navigation.navigate("Add");
   }
 
   async function deletePost(id) {
-    const token = await AsyncStorage.getItem("token");
     console.log("Deleting " + id);
     try {
       const response = await axios.delete(API + API_POSTS + `/${id}`, {
         headers: { Authorization: `JWT ${token}` },
-      })
+      });
       console.log(response);
       setPosts(posts.filter((item) => item.id !== id));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    
   }
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("Details", {id: item.id})}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Details", { id: item.id })}
+      >
         <View
           style={{
             padding: 10,
@@ -126,6 +127,4 @@ export default function IndexScreen({ navigation, route }) {
       />
     </View>
   );
-      }
-
-
+}
