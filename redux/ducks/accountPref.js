@@ -7,7 +7,7 @@ const initialState = {
   isDark: false,
   profilePicture: null,
 };
-export function ligtModeAction() {
+export function lightModeAction() {
   return { type: LIGHT_MODE };
 }
 export function darkModeAction() {
