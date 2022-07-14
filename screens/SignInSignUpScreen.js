@@ -10,12 +10,16 @@ import {
   ActivityIndicator,
   Keyboard,
   LayoutAnimation,
+  ImageBackground,
 } from "react-native";
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { logInAction } from "../redux/ducks/blogAuth";
+const image = {
+  uri: "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=800",
+};
 
 if (
   Platform.OS === "android" &&
@@ -33,6 +37,9 @@ export default function SignInSignUpScreen({ navigation }) {
   const [isLogIn, setIsLogIn] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  function AllaboutScreen() {
+    navigation.navigate("All about tea");
+  }
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
@@ -90,78 +97,86 @@ export default function SignInSignUpScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{isLogIn ? "Log In" : "Sign Up"}</Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Username:"
-          placeholderTextColor="#003f5c"
-          value={username}
-          onChangeText={(username) => setUsername(username)}
-        />
-      </View>
-
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Password:"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(pw) => setPassword(pw)}
-        />
-      </View>
-
-      {isLogIn ? (
-        <View />
-      ) : (
+      <ImageBackground source={image} resizeMode="cover" style={{ flex: 1 }}>
+        <Text style={styles.title}>{isLogIn ? "Log In" : "Sign Up"}</Text>
         <View style={styles.inputView}>
           <TextInput
             style={styles.textInput}
-            placeholder="Confirm Password:"
+            placeholder="Username:"
             placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onChangeText={(pw) => setConfirmPassword(pw)}
+            value={username}
+            onChangeText={(username) => setUsername(username)}
           />
         </View>
-      )}
 
-      <View>
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={isLogIn ? login : signUp}
-          >
-            <Text style={styles.buttonText}>
-              {isLogIn ? "Log In" : "Sign Up"}{" "}
-            </Text>
-          </TouchableOpacity>
-          {loading ? (
-            <ActivityIndicator style={{ marginLeft: 10 }} />
-          ) : (
-            <View />
-          )}
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Password:"
+            placeholderTextColor="#003f5c"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(pw) => setPassword(pw)}
+          />
         </View>
-      </View>
-      <Text style={styles.errorText}>{errorText}</Text>
 
-      <TouchableOpacity
-        onPress={() => {
-          LayoutAnimation.configureNext({
-            duration: 700, // milli seconds
-            create: { type: "linear", property: "opacity" },
-            update: { type: "spring", springDamping: 0.2 },
-          });
-          setIsLogIn(!isLogIn);
-          setErrorText("");
-        }}
-      >
-        <Text style={styles.switchText}>
-          {isLogIn
-            ? "No account? Sign up now."
-            : "Already have an account? Log in here."}
-        </Text>
-      </TouchableOpacity>
+        {isLogIn ? (
+          <View />
+        ) : (
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Confirm Password:"
+              placeholderTextColor="#003f5c"
+              secureTextEntry={true}
+              onChangeText={(pw) => setConfirmPassword(pw)}
+            />
+          </View>
+        )}
+
+        <View>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={isLogIn ? login : signUp}
+            >
+              <Text style={styles.buttonText}>
+                {isLogIn ? "Log In" : "Sign Up"}{" "}
+              </Text>
+            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator style={{ marginLeft: 10 }} />
+            ) : (
+              <View />
+            )}
+          </View>
+        </View>
+        <Text style={styles.errorText}>{errorText}</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            LayoutAnimation.configureNext({
+              duration: 700, // milli seconds
+              create: { type: "linear", property: "opacity" },
+              update: { type: "spring", springDamping: 0.2 },
+            });
+            setIsLogIn(!isLogIn);
+            setErrorText("");
+          }}
+        >
+          <Text style={styles.switchText}>
+            {isLogIn
+              ? "No account? Sign up now."
+              : "Already have an account? Log in here."}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.allaboutButton}
+          onPress={AllaboutScreen}
+        >
+          <Text style={styles.allaboutbuttonText}>All About Tea</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   );
 }
@@ -170,7 +185,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
   },
   title: {
@@ -179,9 +193,23 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   switchText: {
-    fontWeight: "400",
+    fontWeight: "bold",
     fontSize: 20,
     marginTop: 20,
+    color: "white",
+    textShadowColor: "black",
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10,
+  },
+  allaboutButton: {
+    fontWeight: "bold",
+    fontSize: 25,
+    marginTop: 400,
+    alignItems: "center",
+    color: "white",
+    textShadowColor: "black",
+    textShadowOffset: { width: -1, height: 0 },
+    textShadowRadius: 10,
   },
   inputView: {
     backgroundColor: "#FFC0CB",
@@ -197,12 +225,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: "black",
     borderRadius: 25,
   },
   buttonText: {
     fontWeight: "400",
     fontSize: 20,
+    margin: 20,
+    color: "white",
+  },
+  allaboutbuttonText: {
+    fontWeight: "400",
+    fontSize: 30,
     margin: 20,
     color: "white",
   },

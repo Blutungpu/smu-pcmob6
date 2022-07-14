@@ -26,7 +26,8 @@
     "react-native-web": "0.17.7",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
-    "expo-camera": "~12.2.0"
+    "expo-camera": "~12.2.0",
+    "expo-image-picker": "~13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

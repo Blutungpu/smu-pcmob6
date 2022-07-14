@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  ImageBackground,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,6 +12,7 @@ import SignInSignUpScreen from "./screens/SignInSignUpScreen";
 import LoggedInStack from "./components/LoggedInTabStack";
 import { Provider, useSelector } from "react-redux";
 import store from "./redux/configureStore";
+import AllAboutScreen from "./screens/AllaboutScreen";
 
 const Stack = createStackNavigator();
 
@@ -42,6 +48,7 @@ function App() {
       >
         <Stack.Screen component={SignInSignUpScreen} name="SignInSignUp" />
         <Stack.Screen component={LoggedInStack} name="Logged In" />
+        <Stack.Screen component={AllAboutScreen} name="All about tea" />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -58,7 +65,7 @@ export default function AppWrapper() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
   },

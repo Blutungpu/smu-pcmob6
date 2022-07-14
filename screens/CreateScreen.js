@@ -5,11 +5,14 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Button,
+  Image,
 } from "react-native";
 import { lightStyles, commonStyles } from "../styles/commonStyles";
 import axios from "axios";
 import { API, API_CREATE } from "../constants/API";
 import { useSelector } from "react-redux";
+import * as ImagePicker from "expo-image-picker";
 
 export default function CreateScreen({ navigation }) {
   const token = useSelector((state) => state.auth.token);
@@ -17,11 +20,31 @@ export default function CreateScreen({ navigation }) {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   // delete the savePost before you copy paste
   async function savePost() {
     const post = {
       title: title,
       content: content,
+      image: image,
     };
 
     try {
@@ -53,6 +76,18 @@ export default function CreateScreen({ navigation }) {
           value={content}
           onChangeText={(text) => setContent(text)}
         />
+
+        <View>
+          <Text>hello</Text>
+          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          {image && (
+            <Image
+              source={{ uri: image }}
+              style={{ width: 200, height: 200 }}
+            />
+          )}
+        </View>
+
         <TouchableOpacity
           style={[styles.button, { marginTop: 20 }]}
           onPress={savePost}

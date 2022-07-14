@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { lightStyles, commonStyles, darkStyles } from "../styles/commonStyles";
 import axios from "axios";
@@ -48,12 +48,20 @@ export default function ShowScreen({ navigation, route }) {
   }
 
   function editPost() {
-    navigation.navigate("Edit");
+    navigation.navigate("Edit", { post });
   }
+
+  console.log(post);
 
   return (
     <View style={styles.container}>
       <Text style={[styles.title, styles.text]}>{post.title}</Text>
+      <Image
+        source={{ uri: post.image }}
+        style={{ width: "100%", height: "100%", flex: 0.5 }}
+        resizeMode="contain"
+        resizeMethod="auto"
+      />
       <Text style={[styles.content, styles.text]}>{post.content}</Text>
     </View>
   );
